@@ -71,7 +71,8 @@ set history=1000                                        " history limit
 set backspace=indent,eol,start                          " sensible backspacing
 set undofile                                            " enable persistent undo
 set undodir=/tmp                                        " undo temp file directory
-set foldlevel=0                                         " open all folds by default
+set foldmethod=syntax
+set foldlevel=99                                        " open all folds by default
 set inccommand=nosplit                                  " visual feedback while substituting
 set showtabline=2                                       " always show tabline
 set grepprg=rg\ --vimgrep                               " use rg as default grepper
@@ -147,15 +148,14 @@ let g:airline_symbols.dirty= ''
 "" coc
 
 " Navigate snippet placeholders using tab
-let g:coc_snippet_next = '<Tab>'
-let g:coc_snippet_prev = '<S-Tab>'
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<S-tab>'
 
 " list of the extensions to make sure are always installed
 let g:coc_global_extensions = [
             \'coc-yank',
             \'coc-pairs',
             \'coc-json',
-            \'coc-actions',
             \'coc-css',
             \'coc-html',
             \'coc-tsserver',
@@ -172,6 +172,7 @@ let g:coc_global_extensions = [
             \'coc-highlight',
             \'coc-flutter',
             \]
+"            \'coc-actions',
 
 " indentLine
 let g:indentLine_char_list = ['▏', '¦', '┆', '┊']
@@ -202,7 +203,7 @@ let  g:startify_bookmarks =  [
 let g:startify_commands = [
     \ {'ch':  ['Health Check', ':checkhealth']},
     \ {'ps': ['Plugins status', ':PlugStatus']},
-    \ {'pu': ['Update vim plugins',':PlugUpdate | PlugUpgrade']},
+    \ {'pu': ['Update vim plugins',':PlugUpdate --sync | PlugUpgrade']},
     \ {'uc': ['Update coc Plugins', ':CocUpdate']},
     \ {'h':  ['Help', ':help']},
     \ ]
@@ -359,25 +360,25 @@ map <Enter> o<ESC>
 map <S-Enter> O<ESC>
 
 " use a different register for delete and paste
-nnoremap d "_d
-vnoremap d "_d
-vnoremap p "_dP
-nnoremap x "_x
+" nnoremap d "_d
+" vnoremap d "_d
+" vnoremap p "_dP
+" nnoremap x "_x
 
 " emulate windows copy, cut behavior
-vnoremap <LeftRelease> "+y<LeftRelease>
-vnoremap <C-c> "+y<CR>
-vnoremap <C-x> "+d<CR>
+" vnoremap <LeftRelease> "+y<LeftRelease>
+" vnoremap <C-c> "+y<CR>
+" vnoremap <C-x> "+d<CR>
 
 " switch between splits using ctrl + {h,j,k,l}
-inoremap <C-h> <C-\><C-N><C-w>h
-inoremap <C-j> <C-\><C-N><C-w>j
-inoremap <C-k> <C-\><C-N><C-w>k
-inoremap <C-l> <C-\><C-N><C-w>l
-nnoremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+noremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 " disable hl with 2 esc
 noremap <silent><esc> <esc>:noh<CR><esc>
@@ -407,9 +408,11 @@ vmap <F1> <plug>(fzf-maps-x)
 
 " use tab to navigate snippet placeholders
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+	  \ pumvisible() ? coc#_select_confirm() :
+	  \ coc#expandableOrJumpable() ?
+	  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+	  \ <SID>check_back_space() ? "\<TAB>" :
+	  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Use enter to accept snippet expansion
@@ -434,9 +437,9 @@ nmap <leader>ji <Plug>(coc-implementation)
 nmap <leader>jr <Plug>(coc-references)
 
 " other coc actions
-xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nmap <leader>a :CocCommand actions.open<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+nmap <leader>a <Plug>(coc-codeaction-line)
+xmap <leader>a <Plug>(coc-codeaction-selected)
 
 " flutter mappings
 nnoremap <F3> :CocCommand flutter.devices<CR>
@@ -448,9 +451,9 @@ nmap <leader>gd :Gdiffsplit<CR>
 nmap <leader>gb :Gblame<CR>
 
 " tmux navigator
-nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
-nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 "}}}
