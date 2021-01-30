@@ -172,7 +172,6 @@ let g:coc_global_extensions = [
             \'coc-highlight',
             \'coc-flutter',
             \]
-"            \'coc-actions',
 
 " indentLine
 let g:indentLine_char_list = ['▏', '¦', '┆', '┊']
