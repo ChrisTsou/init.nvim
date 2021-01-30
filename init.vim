@@ -203,7 +203,7 @@ let  g:startify_bookmarks =  [
 let g:startify_commands = [
     \ {'ch':  ['Health Check', ':checkhealth']},
     \ {'ps': ['Plugins status', ':PlugStatus']},
-    \ {'pu': ['Update vim plugins',':PlugUpdate --sync | PlugUpgrade']},
+    \ {'pu': ['Update vim plugins',':PlugUpdate | PlugUpgrade']},
     \ {'uc': ['Update coc Plugins', ':CocUpdate']},
     \ {'h':  ['Help', ':help']},
     \ ]
