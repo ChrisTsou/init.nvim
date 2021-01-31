@@ -41,6 +41,7 @@ Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'TovarishFin/vim-solidity'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
+Plug 'lervag/vimtex', {'for': 'tex'}                    " vimtex
 call plug#end()
 
 "}}}
@@ -170,6 +171,7 @@ let g:coc_global_extensions = [
             \'coc-marketplace',
             \'coc-highlight',
             \'coc-texlab',
+            \'coc-vimtex',
             \]
 
 " indentLine
