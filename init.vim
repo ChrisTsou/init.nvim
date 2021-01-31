@@ -148,8 +148,8 @@ let g:airline_symbols.dirty= ''
 "" coc
 
 " Navigate snippet placeholders using tab
-let g:coc_snippet_next = '<tab>'
-let g:coc_snippet_prev = '<S-tab>'
+let g:coc_snippet_next = '<Tab>'
+let g:coc_snippet_prev = '<S-Tab>'
 
 " list of the extensions to make sure are always installed
 let g:coc_global_extensions = [
@@ -162,7 +162,7 @@ let g:coc_global_extensions = [
             \'coc-yaml',
             \'coc-lists',
             \'coc-snippets',
-            \'coc-python',
+            \'coc-pyright',
             \'coc-clangd',
             \'coc-prettier',
             \'coc-xml',
