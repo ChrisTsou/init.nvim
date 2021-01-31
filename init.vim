@@ -28,7 +28,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
 Plug 'junegunn/fzf.vim'                                 " fuzzy search integration
 Plug 'honza/vim-snippets'                               " actual snippets
 Plug 'Yggdroot/indentLine'                              " show indentation lines
-Plug 'tpope/vim-liquid'                                 " liquid language support
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " better python
 Plug 'tpope/vim-commentary'                             " better commenting
 Plug 'mhinz/vim-startify'                               " cool start up screen
@@ -41,6 +40,7 @@ Plug 'machakann/vim-sandwich'                           " make sandwiches
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'TovarishFin/vim-solidity'
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
 call plug#end()
 
 "}}}
@@ -230,7 +230,7 @@ let g:tmux_navigator_no_mappings = 1
 " semshi settings
 let g:semshi#error_sign	= v:false                       " let ms python lsp handle this
 
-"" FZF
+" FZF
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
@@ -241,6 +241,9 @@ let g:fzf_tags_command = 'ctags -R'
 
 let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
 let $FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/**' --glob '!build/**' --glob '!.dart_tool/**' --glob '!.idea' --glob '!node_modules'"
+
+" tex-conceal
+let g:tex_conceal = 'abdgm'
 
 "}}}
 
@@ -357,17 +360,6 @@ noremap <C-q> :q<CR>
 map <Enter> o<ESC>
 map <S-Enter> O<ESC>
 
-" use a different register for delete and paste
-" nnoremap d "_d
-" vnoremap d "_d
-" vnoremap p "_dP
-" nnoremap x "_x
-
-" emulate windows copy, cut behavior
-" vnoremap <LeftRelease> "+y<LeftRelease>
-" vnoremap <C-c> "+y<CR>
-" vnoremap <C-x> "+d<CR>
-
 " switch between splits using ctrl + {h,j,k,l}
 inoremap <A-h> <C-\><C-N><C-w>h
 inoremap <A-j> <C-\><C-N><C-w>j
@@ -450,5 +442,8 @@ nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
+
+" coc-texlab
+autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<cr>
 
 "}}}

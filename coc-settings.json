@@ -72,5 +72,10 @@
   "git.changedSign.text": "▌",
 
   // other language specific settings
-  "html.autoClosingTags": true
+  "html.autoClosingTags": true,
+
+  //coc-texlab
+  //"texlab.path": "/usr/sbin/texlab",
+  "latex.build.executable": "tectonic",
+  "latex.build.args": ["%f"]
 }
