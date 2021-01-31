@@ -438,11 +438,6 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 nmap <leader>a <Plug>(coc-codeaction-line)
 xmap <leader>a <Plug>(coc-codeaction-selected)
 
-" flutter mappings
-nnoremap <F3> :CocCommand flutter.devices<CR>
-nnoremap <F4> :CocCommand flutter.emulators<CR>
-nnoremap <F5> :CocCommand flutter.run<CR>
-
 " fugitive mappings
 nmap <leader>gd :Gdiffsplit<CR>
 nmap <leader>gb :Gblame<CR>
