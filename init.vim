@@ -169,6 +169,7 @@ let g:coc_global_extensions = [
             \'coc-git',
             \'coc-marketplace',
             \'coc-highlight',
+            \'coc-texlab',
             \]
 
 " indentLine
