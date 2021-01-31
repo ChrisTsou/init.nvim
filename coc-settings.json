@@ -72,6 +72,5 @@
   "git.changedSign.text": "▌",
 
   // other language specific settings
-  "html.autoClosingTags": true,
-  "coc.source.ultisnips.filetypes": []
+  "html.autoClosingTags": true
 }

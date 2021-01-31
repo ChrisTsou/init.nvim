@@ -162,7 +162,6 @@ let g:coc_global_extensions = [
             \'coc-yaml',
             \'coc-lists',
             \'coc-snippets',
-            \'coc-pyright',
             \'coc-clangd',
             \'coc-prettier',
             \'coc-xml',
@@ -170,7 +169,6 @@ let g:coc_global_extensions = [
             \'coc-git',
             \'coc-marketplace',
             \'coc-highlight',
-            \'coc-flutter',
             \]
 
 " indentLine
