@@ -346,7 +346,7 @@ map <F6> :Startify <CR>
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>q :bd<CR>
 nmap <leader>w :w<CR>
-map <leader>s :Format<CR>
+map <leader>fo :Format<CR>
 nmap <Tab> :bnext<CR>
 nmap <S-Tab> :bprevious<CR>
 noremap <leader>e :PlugInstall<CR>
@@ -387,14 +387,14 @@ nnoremap <F2> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 au FileType markdown nmap <leader>m :MarkdownPreview<CR>
 
 "" FZF
-nnoremap <silent> <leader>f :Files<CR>
-nmap <leader>b :Buffers<CR>
-nmap <leader>c :Commands<CR>
-nmap <leader>t :BTags<CR>
-nmap <leader>/ :Rg<CR>
-nmap <leader>gc :Commits<CR>
-nmap <leader>gs :GFiles?<CR>
-nmap <leader>sh :History/<CR>
+noremap <leader>lf :Files<CR>
+noremap <leader>lb :Buffers<CR>
+noremap <leader>lc :Commands<CR>
+noremap <leader>lt :BTags<CR>
+noremap <leader>/ :Rg<CR>
+noremap <leader>gc :Commits<CR>
+noremap <leader>gs :GFiles?<CR>
+noremap <leader>lh :History/<CR>
 
 " show mapping on all modes with F1
 nmap <F1> <plug>(fzf-maps-n)
@@ -411,6 +411,8 @@ inoremap <silent><expr> <TAB>
 	  \ <SID>check_back_space() ? "\<TAB>" :
 	  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"list mappings
+nmap <leader>ls :CocList outline<CR>
 
 " Use enter to accept snippet expansion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
