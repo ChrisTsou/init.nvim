@@ -26,6 +26,7 @@ Plug 'Jorengarenar/vim-MvVis'                           " move visual selection
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
 Plug 'junegunn/fzf.vim'                                 " fuzzy search integration
+Plug 'antoinemadec/coc-fzf'                             " 'replaces' coc list with fzf
 Plug 'honza/vim-snippets'                               " actual snippets
 Plug 'Yggdroot/indentLine'                              " show indentation lines
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " better python
@@ -244,6 +245,10 @@ let g:fzf_tags_command = 'ctags -R'
 let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
 let $FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/**' --glob '!build/**' --glob '!.dart_tool/**' --glob '!.idea' --glob '!node_modules'"
 
+" coc-fzf
+let g:coc_fzf_preview = ''                              " do not overwrite fzf_layout
+let g:coc_fzf_opts = []
+
 " tex-conceal
 let g:tex_conceal = 'abdgm'
 
@@ -382,19 +387,24 @@ nnoremap <F2> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 au FileType markdown nmap <leader>m :MarkdownPreview<CR>
 
 "" FZF
+noremap <leader>/ :Rg<CR>
 noremap <leader>lf :Files<CR>
 noremap <leader>lb :Buffers<CR>
-noremap <leader>lc :Commands<CR>
 noremap <leader>lt :BTags<CR>
-noremap <leader>/ :Rg<CR>
+noremap <leader>lh :History/<CR>
 noremap <leader>gc :Commits<CR>
 noremap <leader>gs :GFiles?<CR>
-noremap <leader>lh :History/<CR>
+" coc-fzf
+noremap <leader>lo :CocFzfList outline<CR>
+noremap <leader>lc :CocFzfList commands<CR>
+noremap <leader>ly :CocFzfList yank<CR>
+noremap <leader>ld :CocFzfList diagnostics --current-buf<CR>
 
 " show mapping on all modes with F1
 nmap <F1> <plug>(fzf-maps-n)
 imap <F1> <plug>(fzf-maps-i)
 vmap <F1> <plug>(fzf-maps-x)
+
 
 "" coc
 
@@ -406,8 +416,6 @@ inoremap <silent><expr> <TAB>
 	  \ <SID>check_back_space() ? "\<TAB>" :
 	  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"list mappings
-nmap <leader>ls :CocList outline<CR>
 
 " Use enter to accept snippet expansion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
