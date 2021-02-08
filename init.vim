@@ -25,22 +25,22 @@ Plug 'Jorengarenar/vim-MvVis'                           " move visual selection
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
-Plug 'junegunn/fzf.vim'                                 " fuzzy search integration
-Plug 'antoinemadec/coc-fzf'                             " 'replaces' coc list with fzf
+  Plug 'junegunn/fzf.vim'                               " fuzzy search integration
+  Plug 'antoinemadec/coc-fzf'                           " 'replaces' coc list with fzf
 Plug 'honza/vim-snippets'                               " actual snippets
 Plug 'Yggdroot/indentLine'                              " show indentation lines
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " better python
 Plug 'tpope/vim-commentary'                             " better commenting
 Plug 'mhinz/vim-startify'                               " cool start up screen
 Plug 'tpope/vim-fugitive'                               " git support
 Plug 'psliwka/vim-smoothie'                             " some very smooth ass scrolling
 Plug 'wellle/tmux-complete.vim'                         " complete words from a tmux panes
 Plug 'tpope/vim-eunuch'                                 " run common Unix commands inside Vim
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'machakann/vim-sandwich'                           " make sandwiches
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'TovarishFin/vim-solidity'
+Plug 'machakann/vim-sandwich'                           " make sandwiches
+"js-jsx-ts-tsx
+Plug 'maxmellon/vim-jsx-pretty'
+"tex
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
 Plug 'lervag/vimtex', {'for': 'tex'}                    " vimtex
 call plug#end()
@@ -73,7 +73,7 @@ set history=1000                                        " history limit
 set backspace=indent,eol,start                          " sensible backspacing
 set undofile                                            " enable persistent undo
 set undodir=/tmp                                        " undo temp file directory
-set foldmethod=syntax
+set foldmethod=syntax                                   " fold according to syntax highlight
 set foldlevel=99                                        " open all folds by default
 set inccommand=nosplit                                  " visual feedback while substituting
 set showtabline=2                                       " always show tabline
@@ -97,6 +97,11 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
+"turn off backups (we have git and other vcs anyways)
+set nobackup
+set nowb
+set noswapfile
+
 " Themeing
 let g:material_style = 'oceanic'
 colorscheme vim-material
@@ -115,6 +120,13 @@ hi DiffRemoved guibg=#0f111a guifg=#e53935
 
 " coc multi cursor highlight color
 hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
+
+"comment color
+hi Comment guifg=#86a883
+"fold color
+hi Folded guifg=#86a883
+"conceal color same as normal
+hi Conceal guifg=Normal
 
 "}}}
 
@@ -161,11 +173,11 @@ let g:coc_global_extensions = [
             \'coc-css',
             \'coc-html',
             \'coc-tsserver',
+            \'coc-eslint',
+            \'coc-prettier',
             \'coc-yaml',
             \'coc-lists',
             \'coc-snippets',
-            \'coc-clangd',
-            \'coc-prettier',
             \'coc-xml',
             \'coc-syntax',
             \'coc-git',
@@ -271,8 +283,9 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " startify if no passed argument or all buffers are closed
 augroup noargs
-    " startify when there is no open buffer left(when only scratch buffer is open)
-    autocmd BufEnter * if line2byte('.') == -1 && len(tabpagebuflist()) == 1 | Startify | endif
+    " startify when there is no open buffer left
+    autocmd BufDelete * if empty(filter(tabpagebuflist(), '!buflisted(v:val)')) | Startify | endif
+    " autocmd BufEnter * if line2byte('.') == -1 && len(tabpagebuflist()) == 1 | Startify | endif
 
     " open startify on start if no argument was passed
     autocmd VimEnter * if argc() == 0 | Startify | endif
@@ -399,12 +412,12 @@ noremap <leader>lo :CocFzfList outline<CR>
 noremap <leader>lc :CocFzfList commands<CR>
 noremap <leader>ly :CocFzfList yank<CR>
 noremap <leader>ld :CocFzfList diagnostics --current-buf<CR>
+noremap <leader>ls :CocFzfList snippets<CR>
 
 " show mapping on all modes with F1
 nmap <F1> <plug>(fzf-maps-n)
 imap <F1> <plug>(fzf-maps-i)
 vmap <F1> <plug>(fzf-maps-x)
-
 
 "" coc
 

@@ -4,11 +4,13 @@
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
     "html",
     "css",
     "json",
     "markdown",
-    "typescript",
     "python",
     "dart"
   ],
@@ -75,7 +77,14 @@
   "html.autoClosingTags": true,
 
   //coc-texlab
-  //"texlab.path": "/usr/sbin/texlab",
+  "latex.build.onSave": true,
+  "texlab.path": "/usr/sbin/texlab",
   "latex.build.executable": "tectonic",
-  "latex.build.args": ["%f"]
+  "latex.build.args": ["%f"],
+
+  //coc-tsserver
+  "tsserver.npm": "/home/chris/.nvm/versions/node/v15.6.0/bin/npm",
+
+  //coc-prettier
+  "prettier.eslintIntegration": true
 }
