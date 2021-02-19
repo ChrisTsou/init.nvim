@@ -17,15 +17,13 @@ Plug 'vim-airline/vim-airline'                          " airline status bar
 Plug 'ryanoasis/vim-devicons'                           " pretty icons everywhere
 Plug 'luochen1990/rainbow'                              " rainbow parenthesis
 Plug 'hzchirs/vim-material'                             " material color themes
-Plug 'gregsexton/MatchTag'                              " highlight matching html tags
-Plug 'Jorengarenar/vim-MvVis'                           " move visual selection
 "}}}
 
 " ================= Functionalities ================= "{{{
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
   Plug 'junegunn/fzf.vim'                               " fuzzy search integration
+Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
   Plug 'antoinemadec/coc-fzf'                           " 'replaces' coc list with fzf
 Plug 'honza/vim-snippets'                               " actual snippets
 Plug 'Yggdroot/indentLine'                              " show indentation lines
@@ -34,12 +32,14 @@ Plug 'mhinz/vim-startify'                               " cool start up screen
 Plug 'tpope/vim-fugitive'                               " git support
 Plug 'psliwka/vim-smoothie'                             " some very smooth ass scrolling
 Plug 'wellle/tmux-complete.vim'                         " complete words from a tmux panes
-Plug 'tpope/vim-eunuch'                                 " run common Unix commands inside Vim
+" Plug 'tpope/vim-eunuch'                                 " run common Unix commands inside Vim
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'machakann/vim-sandwich'                           " make sandwiches
+"tests
+Plug 'vim-test/vim-test'
 "js-jsx-ts-tsx
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'maxmellon/vim-jsx-pretty' , {'for': 'javascriptreact'} "jsx highlighting
 "tex
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
 Plug 'lervag/vimtex', {'for': 'tex'}                    " vimtex
@@ -104,6 +104,7 @@ set noswapfile
 
 " Themeing
 let g:material_style = 'oceanic'
+set background=dark
 colorscheme vim-material
 hi Pmenu guibg='#00010a' guifg=white                    " popup menu colors
 hi Comment gui=italic cterm=italic                      " italic comments
@@ -310,7 +311,7 @@ autocmd BufReadPost *
      \ endif
 
 " python renaming
-autocmd FileType python nnoremap <leader>rn :Semshi rename <CR>
+" autocmd FileType python nnoremap <leader>rn :Semshi rename <CR>
 
 " format with available file format formatter
 command! -nargs=0 Format :call CocAction('format')
@@ -431,7 +432,8 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Use enter to accept snippet expansion
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " multi cursor shortcuts
 nmap <silent> <C-a> <Plug>(coc-cursors-word)
@@ -468,5 +470,12 @@ nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 " coc-texlab
 autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<cr>
+
+" vim-test
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>tf :TestFile<CR>
+nmap <silent> <leader>ts :TestSuite<CR>
+nmap <silent> <leader>tl :TestLast<CR>
+nmap <silent> <leader>tv :TestVisit<CR>
 
 "}}}

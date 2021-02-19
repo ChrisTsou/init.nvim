@@ -65,6 +65,7 @@
 
   // list settings
   "list.source.grep.command": "rg",
+  "list.height": 30,
 
   // git settings
   "git.topRemovedSign.text": "▌",
@@ -83,8 +84,13 @@
   "latex.build.args": ["%f"],
 
   //coc-tsserver
-  "tsserver.npm": "/home/chris/.nvm/versions/node/v15.6.0/bin/npm",
+  //"tsserver.npm": "/home/chris/.nvm/versions/node/v15.8.0/bin/npm",
 
   //coc-prettier
-  "prettier.eslintIntegration": true
+  "prettier.eslintIntegration": true,
+
+  //coc-snippets
+  "snippets.extends": {
+    "javascriptreact": ["html", "javascript"]
+  }
 }
