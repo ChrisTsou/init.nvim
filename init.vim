@@ -32,7 +32,6 @@ Plug 'mhinz/vim-startify'                               " cool start up screen
 Plug 'tpope/vim-fugitive'                               " git support
 Plug 'psliwka/vim-smoothie'                             " some very smooth ass scrolling
 Plug 'wellle/tmux-complete.vim'                         " complete words from a tmux panes
-" Plug 'tpope/vim-eunuch'                                 " run common Unix commands inside Vim
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'machakann/vim-sandwich'                           " make sandwiches
@@ -128,6 +127,8 @@ hi Comment guifg=#86a883
 hi Folded guifg=#86a883
 "conceal color same as normal
 hi Conceal guifg=Normal
+"for coc-nvim same symbol highlight
+hi CursorColumn guifg=white
 
 "}}}
 
@@ -397,9 +398,6 @@ noremap <silent><esc> <esc>:noh<CR><esc>
 " trim white spaces
 nnoremap <F2> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
-" markdown preview
-au FileType markdown nmap <leader>m :MarkdownPreview<CR>
-
 "" FZF
 noremap <leader>/ :Rg<CR>
 noremap <leader>lf :Files<CR>
@@ -468,14 +466,19 @@ nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
-" coc-texlab
-autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<cr>
-
 " vim-test
 nmap <silent> <leader>tn :TestNearest<CR>
 nmap <silent> <leader>tf :TestFile<CR>
 nmap <silent> <leader>ts :TestSuite<CR>
 nmap <silent> <leader>tl :TestLast<CR>
 nmap <silent> <leader>tv :TestVisit<CR>
+
+" ---------------------- FileType specific mappings ----------------------------
+
+" coc-texlab
+autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<cr>
+
+" markdown preview
+autocmd FileType markdown nmap <leader>m :MarkdownPreview<CR>
 
 "}}}

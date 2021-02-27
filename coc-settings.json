@@ -85,6 +85,7 @@
 
   //coc-tsserver
   //"tsserver.npm": "/home/chris/.nvm/versions/node/v15.8.0/bin/npm",
+  //"tsserver.trace.server": "verbose",
 
   //coc-prettier
   "prettier.eslintIntegration": true,
