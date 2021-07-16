@@ -1,4 +1,5 @@
 {
+  "tsserver.log": "verbose",
   // normal settings
   "coc.preferences.colorSupport": true,
   "coc.preferences.snippetStatusText": "Ⓢ ",
@@ -11,8 +12,7 @@
     "css",
     "json",
     "markdown",
-    "python",
-    "dart"
+    "python"
   ],
 
   // suggest settings
@@ -59,9 +59,9 @@
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "ஐ",
   "diagnostic.checkCurrentLine": true,
-  "diagnostic.virtualTextPrefix": " ❯❯❯ ",
-  "diagnostic.virtualText": true,
-  "diagnostic.enableMessage": "never",
+  //"diagnostic.virtualTextPrefix": " ❯❯❯ ",
+  //"diagnostic.virtualText": true,
+  //"diagnostic.enableMessage": "never",
 
   // list settings
   "list.source.grep.command": "rg",
@@ -84,7 +84,8 @@
   "latex.build.args": ["%f"],
 
   //coc-tsserver
-  //"tsserver.npm": "/home/chris/.nvm/versions/node/v15.8.0/bin/npm",
+  "tsserver.npm": "/home/chris/.nvm/versions/node/**/bin/npm",
+  "tsserver.disableAutomaticTypeAcquisition": true,
   //"tsserver.trace.server": "verbose",
 
   //coc-prettier
@@ -92,6 +93,8 @@
 
   //coc-snippets
   "snippets.extends": {
-    "javascriptreact": ["html", "javascript"]
+    "javascriptreact": ["html", "javascript"],
+    "typescriptreact": ["html", "javascript"],
+    "typescript": ["javascript"]
   }
 }

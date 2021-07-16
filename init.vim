@@ -24,12 +24,13 @@ Plug 'hzchirs/vim-material'                             " material color themes
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
   Plug 'junegunn/fzf.vim'                               " fuzzy search integration
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
+
   Plug 'antoinemadec/coc-fzf'                           " 'replaces' coc list with fzf
 Plug 'honza/vim-snippets'                               " actual snippets
 Plug 'Yggdroot/indentLine'                              " show indentation lines
 Plug 'tpope/vim-commentary'                             " better commenting
 Plug 'mhinz/vim-startify'                               " cool start up screen
-Plug 'tpope/vim-fugitive'                               " git support
+" Plug 'tpope/vim-fugitive'                               " git support
 Plug 'psliwka/vim-smoothie'                             " some very smooth ass scrolling
 Plug 'wellle/tmux-complete.vim'                         " complete words from a tmux panes
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
@@ -38,10 +39,12 @@ Plug 'machakann/vim-sandwich'                           " make sandwiches
 "tests
 Plug 'vim-test/vim-test'
 "js-jsx-ts-tsx
-Plug 'maxmellon/vim-jsx-pretty' , {'for': 'javascriptreact'} "jsx highlighting
+Plug 'pangloss/vim-javascript' , {'for': ['javascript', 'javascriptreact']}
+Plug 'leafgarland/typescript-vim' , {'for': ['typescript', 'typescriptreact']}
+Plug 'maxmellon/vim-jsx-pretty' , {'for': ['javascriptreact', 'typescriptreact']} "jsx highlighting
 "tex
-Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
 Plug 'lervag/vimtex', {'for': 'tex'}                    " vimtex
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
 call plug#end()
 
 "}}}
@@ -85,7 +88,7 @@ set scrolljump=5
 set lazyredraw
 set redrawtime=10000
 set synmaxcol=180
-set re=1
+set re=0
 
 " required by coc
 set hidden
@@ -210,8 +213,10 @@ let g:startify_lists = [
 
 " bookmark examples
 let  g:startify_bookmarks =  [
-    \ {'v': '~/.config/nvim'},
-    \ {'d': '~/.dotfiles' }
+    \ {'v': '~/.config/nvim/init.vim'},
+    \ {'coc': '~/.config/nvim/coc-settings.json'},
+    \ {'al': '~/.zsh_aliases'},
+    \ {'term': '/mnt/c/Users/chris/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json'}
     \ ]
 
 " custom commands
@@ -244,19 +249,16 @@ let g:rainbow_active = 1
 " tmux navigator
 let g:tmux_navigator_no_mappings = 1
 
-" semshi settings
-let g:semshi#error_sign	= v:false                       " let ms python lsp handle this
-
 " FZF
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
+  \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
+  " \ 'ctrl-t': 'tab split',
 
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
 let g:fzf_tags_command = 'ctags -R'
 
-let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
+let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info --bind=ctrl-t:down,ctrl-s:up'
 let $FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/**' --glob '!build/**' --glob '!.dart_tool/**' --glob '!.idea' --glob '!node_modules'"
 
 " coc-fzf
@@ -265,6 +267,15 @@ let g:coc_fzf_opts = []
 
 " tex-conceal
 let g:tex_conceal = 'abdgm'
+
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+
+" vim-smoothie
+let g:smoothie_no_default_mappings = 1
+
+" vim-test
+let test#strategy = "neovim"
 
 "}}}
 
@@ -311,9 +322,6 @@ autocmd BufReadPost *
      \   exe "normal! g`\"" |
      \ endif
 
-" python renaming
-" autocmd FileType python nnoremap <leader>rn :Semshi rename <CR>
-
 " format with available file format formatter
 command! -nargs=0 Format :call CocAction('format')
 
@@ -326,6 +334,15 @@ command! -bang -nargs=? -complete=dir Files
 
 " advanced grep
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
 
 "}}}
 
@@ -364,33 +381,44 @@ endfunction
 
 " ======================== Custom Mappings ====================== "{{{
 
+"keyboard layout remaps
+noremap t j
+noremap s k
+noremap n l
+
+noremap j t
+noremap k s
+noremap l n
+
 "" the essentials
 let mapleader=","
-nnoremap ; :
 nmap \ <leader>q
 map <F6> :Startify <CR>
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>q :bd<CR>
 nmap <leader>w :w<CR>
 map <leader>fo :Format<CR>
-nmap <Tab> :bnext<CR>
-nmap <S-Tab> :bprevious<CR>
+nmap <C-w> :bnext<CR>
+nmap <C-d> :bprevious<CR>
 noremap <leader>e :PlugInstall<CR>
 noremap <C-q> :q<CR>
+" renaming
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rf :CocCommand workspace.renameCurrentFile<CR>
 
 " new line in normal mode and back
 map <Enter> o<ESC>
 map <S-Enter> O<ESC>
 
 " switch between splits using ctrl + {h,j,k,l}
-inoremap <A-h> <C-\><C-N><C-w>h
-inoremap <A-j> <C-\><C-N><C-w>j
-inoremap <A-k> <C-\><C-N><C-w>k
-inoremap <A-l> <C-\><C-N><C-w>l
-nnoremap <A-h> <C-w>h
-noremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-t> <C-\><C-N><C-w>j
+inoremap <C-s> <C-\><C-N><C-w>k
+inoremap <C-n> <C-\><C-N><C-w>l
+nnoremap <C-h> <C-w>h
+noremap <C-t> <C-w>j
+nnoremap <C-s> <C-w>k
+nnoremap <C-n> <C-w>l
 
 " disable hl with 2 esc
 noremap <silent><esc> <esc>:noh<CR><esc>
@@ -410,7 +438,7 @@ noremap <leader>gs :GFiles?<CR>
 noremap <leader>lo :CocFzfList outline<CR>
 noremap <leader>lc :CocFzfList commands<CR>
 noremap <leader>ly :CocFzfList yank<CR>
-noremap <leader>ld :CocFzfList diagnostics --current-buf<CR>
+noremap <leader>ld :CocFzfList diagnostics --jurrent-buf<CR>
 noremap <leader>ls :CocFzfList snippets<CR>
 
 " show mapping on all modes with F1
@@ -427,7 +455,7 @@ inoremap <silent><expr> <TAB>
 	  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
 	  \ <SID>check_back_space() ? "\<TAB>" :
 	  \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+nnoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Use enter to accept snippet expansion
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
@@ -442,7 +470,6 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " other stuff
-nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>o :OR <CR>
 
 " jump stuff
@@ -453,7 +480,7 @@ nmap <leader>jr <Plug>(coc-references)
 
 " other coc actions
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-nmap <leader>a <Plug>(coc-codeaction-line)
+nmap <leader>a <Plug>(coc-codeaction-cursor)
 xmap <leader>a <Plug>(coc-codeaction-selected)
 
 " fugitive mappings
@@ -461,10 +488,10 @@ nmap <leader>gd :Gdiffsplit<CR>
 nmap <leader>gb :Gblame<CR>
 
 " tmux navigator
-nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
+" nnoremap <silent> <M-h> :TmuxNavigateLeft<cr>
+" nnoremap <silent> <M-t> :TmuxNavigateDown<cr>
+" nnoremap <silent> <M-s> :TmuxNavigateUp<cr>
+" nnoremap <silent> <M-n> :TmuxNavigateRight<cr>
 
 " vim-test
 nmap <silent> <leader>tn :TestNearest<CR>
@@ -473,10 +500,34 @@ nmap <silent> <leader>ts :TestSuite<CR>
 nmap <silent> <leader>tl :TestLast<CR>
 nmap <silent> <leader>tv :TestVisit<CR>
 
+
+"sandwich remap
+let g:sandwich_no_default_key_mappings = 1
+let g:operator_sandwich_no_default_key_mappings = 1
+let g:textobj_sandwich_no_default_key_mappings = 1
+
+map S <Nop> "so substitute line does not work
+
+silent! nmap <unique> Sa <Plug>(operator-sandwich-add)
+silent! xmap <unique> Sa <Plug>(operator-sandwich-add)
+silent! omap <unique> Sa <Plug>(operator-sandwich-g@)
+
+silent! nmap <unique><silent> Sd <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+silent! nmap <unique><silent> Sr <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+silent! nmap <unique><silent> Sdb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+silent! nmap <unique><silent> Srb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+
+" Smoothie
+nmap <C-t> <Plug>(SmoothieDownwards)
+nmap <C-s> <Plug>(SmoothieUpwards)
+nmap gg <Plug>(Smoothie_gg)
+nmap G <Plug>(Smoothie_G)
+
+
 " ---------------------- FileType specific mappings ----------------------------
 
 " coc-texlab
-autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<cr>
+autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<CR>
 
 " markdown preview
 autocmd FileType markdown nmap <leader>m :MarkdownPreview<CR>
