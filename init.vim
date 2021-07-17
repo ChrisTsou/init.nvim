@@ -36,6 +36,7 @@ Plug 'wellle/tmux-complete.vim'                         " complete words from a 
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'machakann/vim-sandwich'                           " make sandwiches
+Plug 'folke/which-key.nvim'                             " display keybinds as you type them
 "tests
 Plug 'vim-test/vim-test'
 "js-jsx-ts-tsx
@@ -45,6 +46,7 @@ Plug 'maxmellon/vim-jsx-pretty' , {'for': ['javascriptreact', 'typescriptreact']
 "tex
 Plug 'lervag/vimtex', {'for': 'tex'}                    " vimtex
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}    " tex conceal
+
 call plug#end()
 
 "}}}
@@ -380,7 +382,6 @@ endfunction
 "}}}
 
 " ======================== Custom Mappings ====================== "{{{
-
 "keyboard layout remaps
 noremap t j
 noremap s k
@@ -506,7 +507,6 @@ let g:sandwich_no_default_key_mappings = 1
 let g:operator_sandwich_no_default_key_mappings = 1
 let g:textobj_sandwich_no_default_key_mappings = 1
 
-map S <Nop> "so substitute line does not work
 
 silent! nmap <unique> Sa <Plug>(operator-sandwich-add)
 silent! xmap <unique> Sa <Plug>(operator-sandwich-add)
@@ -517,12 +517,14 @@ silent! nmap <unique><silent> Sr <Plug>(operator-sandwich-replace)<Plug>(operato
 silent! nmap <unique><silent> Sdb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
 silent! nmap <unique><silent> Srb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
 
+"so substitute line does not work
+map S <Nop>
+
 " Smoothie
 nmap <C-t> <Plug>(SmoothieDownwards)
 nmap <C-s> <Plug>(SmoothieUpwards)
 nmap gg <Plug>(Smoothie_gg)
 nmap G <Plug>(Smoothie_G)
-
 
 " ---------------------- FileType specific mappings ----------------------------
 
@@ -533,3 +535,11 @@ autocmd FileType tex nnoremap <leader>bf :CocCommand latex.Build<CR>
 autocmd FileType markdown nmap <leader>m :MarkdownPreview<CR>
 
 "}}}
+
+lua << EOF
+  require("which-key").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
